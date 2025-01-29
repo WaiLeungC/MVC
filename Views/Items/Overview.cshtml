@@ -1,4 +1,22 @@
 ﻿@model Item
+
 @{
+    var isLoggedIn = true;
+    var items = new List<string> { "Item 1", "Item 2", "Item 3" };
 }
-<p>This is the name of the item: @Model.Name</p>
+
+@if (isLoggedIn)
+{
+    <h1>Welcome to the Items Overview</h1>
+
+    <ul>
+        @foreach (var item in items)
+        {
+            <li>@item</li>
+        }
+    </ul>
+}
+else
+{
+    <h1>Unauthorized</h1>
+}
