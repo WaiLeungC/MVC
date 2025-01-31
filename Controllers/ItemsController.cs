@@ -20,6 +20,8 @@ namespace MVC.Controllers
             var items = await _context.Items
                 .Include(s => s.SerialNumber)
                 .Include(c => c.Category)
+                .Include(ic => ic.ItemClients)
+                .ThenInclude(c => c.Client)
                 .ToListAsync();
             return View(items);
         }

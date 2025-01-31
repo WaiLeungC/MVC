@@ -13,6 +13,7 @@
             <th>Price</th>
             <th>Serial Number</th>
             <th>Category</th>
+            <th>Clients</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,11 @@
                 <td>@item.Price.ToString("N2")</td>
                 <td>@item.SerialNumber?.Name</td>
                 <td>@item.Category?.Name</td>
+                <td>
+                    @(item.ItemClients != null && item.ItemClients.Any()
+                        ? string.Join(", ", item.ItemClients.Select(c => c.Client.Name))
+                        : "No Clients")
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
