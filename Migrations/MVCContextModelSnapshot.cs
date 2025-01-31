@@ -21,6 +21,35 @@ namespace MVC.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MVC.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 21,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Books"
+                        });
+                });
+
             modelBuilder.Entity("MVC.Models.Item", b =>
                 {
                     b.Property<int>("Id")
@@ -28,6 +57,9 @@ namespace MVC.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -40,6 +72,8 @@ namespace MVC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Items");
 
@@ -98,6 +132,15 @@ namespace MVC.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVC.Models.Item", b =>
+                {
+                    b.HasOne("MVC.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("MVC.Models.SerialNumber", b =>
                 {
                     b.HasOne("MVC.Models.Item", "Item")
@@ -105,6 +148,11 @@ namespace MVC.Migrations
                         .HasForeignKey("MVC.Models.SerialNumber", "ItemId");
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("MVC.Models.Category", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("MVC.Models.Item", b =>
